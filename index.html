@@ -173,19 +173,22 @@
             line-height: 4;
         }
         
-        .video-container {
-            width: 100%;
-            border-radius: 10px;
-            margin-bottom: 30px;
-            overflow: hidden;
-            position: relative;
-        }
-    
-        .counter-video {
-            width: 100%;
-            display: block;
-            border-radius: 10px;
-        }
+       .video-container {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    overflow: hidden;
+    position: relative;
+    background: #000; /* Fallback background */
+}
+
+.counter-video {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 10px;
+    object-fit: cover; /* Ensures the video/poster fills the container */
+}
         
         .counter-display-container {
             position: relative;
@@ -649,7 +652,7 @@
             <div class="counter-container">
                 <div class="video-side">
                     <div class="video-container" id="videoContainer">
-                        <video class="counter-video" id="counterVideo" muted poster="poster.webp">
+                        <video class="counter-video" id="counterVideo" muted poster="assets/images/poster.webp">
                             <!-- Source elements will be added dynamically -->
                             Your browser does not support the video tag.
                         </video>
@@ -807,12 +810,14 @@
     const normalVideo = document.createElement('video');
     normalVideo.className = 'counter-video';
     normalVideo.muted = true;
+    normalVideo.poster = 'assets/images/poster.webp';
     normalVideo.src = 'assets/video/video1.mp4';
     normalVideo.load();
     
     const specialVideo = document.createElement('video');
     specialVideo.className = 'counter-video';
     specialVideo.muted = true;
+    specialVideo.poster = 'assets/images/poster.webp';
     specialVideo.src = 'assets/video/video2.mp4';
     specialVideo.load();
     specialVideo.style.display = 'none';
