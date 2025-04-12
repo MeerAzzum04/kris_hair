@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kris With Hair - Interactive Experience</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+@font-face {
+    font-family: 'TrajanPro-Bold';
+    src: url('assets/font/TrajanPro-Bold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap; 
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'TrajanPro-Bold', 'Old English Text MT', serif;
+    -webkit-font-smoothing: antialiased; 
+    -moz-osx-font-smoothing: grayscale; 
+    text-rendering: optimizeLegibility;
+}
+        body {
+            background-color: #000000;
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+            font-synthesis: none; 
+        }
+        
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 5px 20px;
+    }
+    
+        .hero {
+            position: relative;
+            height: 60vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1;
+        }
+        
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 0;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            padding: 0 20px;
+        }
+        
+        .hero-title {
+            font-size: 5rem;
+            font-weight: 800;
+            color: white;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            animation: fadeInUp 1s ease;
+        }
+        
+        .hero-subtitle {
+            font-size: 2.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 10px;
+            animation: fadeInUp 1s ease 0.2s forwards;
+            opacity: 0;
+            font-style: italic;
+        }
+        
+        .hero-address {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 30px;
+            animation: fadeInUp 1s ease 0.4s forwards;
+            opacity: 0;
+            word-break: break-all;
+        }
+
+        .counter-section {
+            padding: 60px 0 10px 0;
+            background: #111;
+            text-align: center;
+        }
+        
+        .section-title {
+            font-size: 2.7rem;
+            margin-bottom: 10px;
+            color: #ffffff;
+        }
+        
+        .rules-list {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 50px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
+            padding-left: 20px;
+        }
+        
+        .rules-list li {
+            margin-bottom: 10px;
+        }
+        
+        .counter-container {
+            position: relative;
+            max-width: 1000px;
+            margin: 0 auto 50px;
+            padding: 50px;
+            border-radius: 20px;
+            background: #222;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+        
+        .video-side {
+            margin-top:-200px;
+            flex: 1;
+        }
+        
+        .info-side {
+            position: relative;
+            flex: 1;
+            text-align: center;
+            padding: 20px;
+            margin-bottom: 100px;
+
+        }
+        
+        .info-side h3 {
+            font-size:2.6rem;
+            margin-bottom: 20px;
+            color: #ffd700;
+        }
+        
+        .info-side p {
+            font-size: 1.4rem;
+            background: #111;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            line-height: 4;
+        }
+        
+        .video-container {
+            width: 100%;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            overflow: hidden;
+            position: relative;
+        }
+    
+        .counter-video {
+            width: 100%;
+            display: block;
+            border-radius: 10px;
+        }
+        
+        .counter-display-container {
+            position: relative;
+            background: #111;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+            border: 2px solid #333;
+            overflow: hidden;
+        }
+
+        .counter-display-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 215, 0, 0.3);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 0;
+        }
+
+        .counter-display-container.animate::before {
+            opacity: 1;
+            animation: color-fade 1s forwards;
+        }
+        
+        .counter-display {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #ffd700;
+            margin-bottom: 0;
+            position: relative;
+            z-index: 2;
+            letter-spacing: 5px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .rules-list{
+            list-style: none;
+        }
+        .counter-btn {
+            background: transparent;
+            color: #ffd700;
+            border: 2px solid #ffd700;
+            padding: 15px 40px;
+            font-size: 1.5rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            outline: none;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            margin-top: 20px;
+        }
+        
+        .counter-btn:hover {
+            color: #000;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 215, 0, 0.3);
+        }
+        
+        .counter-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background: #ffd700;
+            z-index: -1;
+            transition: width 0.3s ease;
+        }
+        
+        .counter-btn:hover::before {
+            width: 100%;
+        }
+        
+        .counter-btn:active {
+            transform: scale(0.95) translateY(-3px);
+        }
+        
+
+.container-fullwidth {
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+
+.clients-section {
+    padding: 60px 0;
+    background: #111;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.clients-title {
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+    color: #ffffff;
+}
+
+.clients-carousel {
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.clients-track {
+    display: flex;
+    transition: transform 0.5s ease;
+    will-change: transform;
+    padding: 20px 0;
+    width: 100%;
+}
+
+.client-slide {
+    flex: 0 0 10%;
+    padding: 0 10px;
+    transition: transform 0.3s ease;
+}
+
+.client-logo {
+    background: #222;
+    border-radius: 10px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.client-logo:hover {
+    transform: translateY(-5px);
+    background: #333;
+}
+
+.client-logo img {
+    max-width: 100%;
+    max-height: 100%;
+    filter: brightness(0) invert(1);
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+.client-logo:hover img {
+    opacity: 1;
+}
+
+.carousel-dots {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    padding: 0 20px;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #333;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dot.active {
+    background: #ffd700;
+    transform: scale(1.2);
+}
+
+  
+        footer {
+            background: #000;
+            color: white;
+            padding: 15px 0 0px;
+            border-top: 1px solid #222;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 5px;
+        }
+        
+        .footer-logo img {
+            height: 80px;
+            width: auto;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 30px;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 1.3rem;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: #ffd700;
+        }
+    
+        .footer-bottom {
+            text-align: center;
+            padding: 10px 0 5px;;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+        
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+       
+        @keyframes color-fade {
+    0% {
+        opacity: 0;
+        background: rgba(255, 215, 0, 0);
+    }
+    50% {
+        opacity: 1;
+        background: rgba(255, 215, 0, 0.5);
+    }
+    100% {
+        opacity: 0;
+        background: rgba(255, 215, 0, 0);
+    }
+}
+        
+       
+        @media (max-width: 1024px) {
+          
+            .hero-bg {
+               content: url(assets/images/Bannerimage2.jpg);
+            }
+            
+            .client-slide {
+                flex: 0 0 20%; /* Show 5 per row on tablet */
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.5rem;
+            }
+            
+            .hero-address {
+                font-size: 1rem;
+            }
+            
+            .counter-display {
+                font-size: 2.5rem;
+            }
+            
+            .counter-container {
+                flex-direction: column;
+            }
+
+            .counter-btn {
+            font-size: 2.2rem;
+            border-radius: 50px;
+            }
+
+         .video-container{
+            margin-top: 40px;
+         }
+            .info-side p {
+            font-size: 1.6rem;
+            border-radius: 20px;
+            padding: 10px 100px;
+            text-align: center;
+            margin-top: 50px;
+            line-height: 2.2;
+        }
+            .info-side {
+                margin-top: 50px;
+                text-align: center;
+            }
+            
+       
+            .hero-bg {
+                content: url(assets/images/Bannerimage3.jpg);
+            }
+            
+            .client-slide {
+                flex: 0 0 25%; /* Show 4 per row on mobile */
+                padding: 0 5px;
+            }
+            
+            .client-logo {
+                height: 80px;
+                padding: 15px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .counter-btn {
+            font-size: 1.4rem;
+            border-radius: 60px;
+            }
+
+         .video-container{
+            margin-top: 120px;
+         }
+            .info-side p {
+            font-size: 1.6rem;
+            border-radius: 20px;
+            text-align: center;
+            margin-top: 50px;
+            line-height: 1.5;
+        }
+            .info-side {
+                margin-top: 50px;
+                text-align: center;
+            }
+            .hero-title {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .footer-links {
+                margin-top: 20px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .client-slide {
+                flex: 0 0 25%; /* Show 4 per row on small mobile */
+                padding: 0 5px;
+            }
+            
+            .client-logo {
+                height: 70px;
+                padding: 10px;
+            }
+            
+            .clients-title {
+                font-size: 2rem;
+                margin-bottom: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <img src="assets/images/Bannerimage.jpg" alt="Technology background" class="hero-bg">
+        <div class="hero-content">
+            <h1 class="hero-title">KRIS WITH HAIR</h1>
+            <p class="hero-subtitle">"Jesus Kris"</p>
+            <p class="hero-address">CA: 0xa60F8E703d8Ef26534658625E7e6900099f66210</p>
+        </div>
+    </section>
+
+    <!-- Counter Section -->
+    <section class="counter-section">
+        <div class="container">
+            <h2 class="section-title">The Rules</h2>
+            <ul class="rules-list">
+                <li>1) Click the "Blessed Button"</li>
+                <li>2) Find the blue and gold confetti to be a winner</li>
+                <li>3) Screen shot your win and post on X</li>
+                <li>4) Tag your screenshot to @KrisWithHair</li>
+                <li>5) Recieve your free Reward</li>
+                <li>6) Stay Blessed</li>
+            </ul>
+            
+            <div class="counter-container">
+                <div class="video-side">
+                    <div class="video-container" id="videoContainer">
+                        <video class="counter-video" id="counterVideo" muted poster="video-poster.jpg">
+                            <!-- Source elements will be added dynamically -->
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                    <div class="counter-display-container">
+                        <div class="counter-display" id="counter">000000</div>
+                    </div>
+                    <button class="counter-btn" id="counterBtn">Blessed Button</button>
+                </div>
+                <div class="info-side">
+                    <h3>The Burns</h3>
+                    <p>100 blessed = 0.125% 🔥</p>
+                    <p>1000 blessed = 0.50% 🔥🔥</p>
+                    <p>5000 blessed = 0.875% 🔥🔥🔥</p>
+                    <p>10000 blessed = 1.25% 🔥🔥🔥🔥</p>
+                    <p>100000 blessed = 2.5% 🔥🔥🔥🔥🔥</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Clients Section - Carousel -->
+    <section class="clients-section">
+        <div class="container-fullwidth">
+            <h2 class="clients-title">Our Trusted Partners</h2>
+            
+            <div class="clients-carousel">
+                <div class="clients-track" id="clientsTrack">
+                    <div class="client-slide">
+                        <div class="client-logo"><img src="assets/images/Logo.png" alt="Client 1"></div>
+                    </div>
+                    <div class="client-slide">
+                        <div class="client-logo"><img src="assets/images/Logo.png" alt="Client 2"></div>
+                    </div>
+                    <div class="client-slide">
+                        <div class="client-logo"><img src="assets/images/Logo.png" alt="Client 3"></div>
+                    </div>
+                    <div class="client-slide">
+                        <div class="client-logo"><img src="assets/images/Logo.png" alt="Client 4"></div>
+                    </div>
+                    <div class="client-slide">
+                        <div class="client-logo"><img src="assets/images/Logo.png" alt="Client 5"></div>
+                    </div>
+                    <div class="client-slide">
+                        <div class="client-logo"><img src="assets/images/Logo.png" alt="Client 6"></div>
+                    </div>
+                    <div class="client-slide">
+                        <div class="client-logo"><img src="assets/images/Logo.png" alt="Client 7"></div>
+                    </div>
+                    <div class="client-slide">
+                        <div class="client-logo"><img src="assets/images/Logo.png" alt="Client 8"></div>
+                    </div>
+                    <div class="client-slide">
+                        <div class="client-logo"><img src="assets/images/Logo.png" alt="Client 9"></div>
+                    </div>
+                    <div class="client-slide">
+                        <div class="client-logo"><img src="assets/images/Logo.png" alt="Client 10"></div>
+                    </div>
+                    <div class="client-slide">
+                        <div class="client-logo"><img src="assets/images/Logo.png" alt="Client 11"></div>
+                    </div>
+                    <div class="client-slide">
+                        <div class="client-logo"><img src="assets/images/Logo.png" alt="Client 12"></div>
+                    </div>
+                    <div class="client-slide">
+                        <div class="client-logo"><img src="assets/images/Logo.png" alt="Client 13"></div>
+                    </div>
+                    <div class="client-slide">
+                        <div class="client-logo"><img src="assets/images/Logo.png" alt="Client 14"></div>
+                    </div>
+                    <div class="client-slide">
+                        <div class="client-logo"><img src="assets/images/Logo.png" alt="Client 15"></div>
+                    </div>
+                    <div class="client-slide">
+                        <div class="client-logo"><img src="assets/images/Logo.png" alt="Client 16"></div>
+                    </div>
+                    <div class="client-slide">
+                        <div class="client-logo"><img src="assets/images/Logo.png" alt="Client 17"></div>
+                    </div>
+                    <div class="client-slide">
+                        <div class="client-logo"><img src="assets/images/Logo.png" alt="Client 18"></div>
+                    </div>
+                    <div class="client-slide">
+                        <div class="client-logo"><img src="assets/images/Logo.png" alt="Client 19"></div>
+                    </div>
+                    <div class="client-slide">
+                        <div class="client-logo"><img src="assets/images/Logo.png" alt="Client 20"></div>
+                    </div>
+                </div>
+                
+                <div class="carousel-dots" id="carouselDots"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo"><img src="assets/images/Logo.png" alt="Kris Hair Logo"></div>
+                <div class="footer-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms & Conditions</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <button id="resetCounterBtn" style="display: none;">Admin: Reset Counter</button>
+                <p>© 2025 Kris With Hair. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Audio Elements -->
+    <audio id="bellSound1" preload="auto">
+        <source src="assets/audio/audio1.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="bellSound2" preload="auto">
+        <source src="assets/audio/audio2.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Elements
+    const counterBtn = document.getElementById('counterBtn');
+    const counter = document.getElementById('counter');
+    const counterContainer = document.querySelector('.counter-display-container');
+    const bellSound1 = document.getElementById('bellSound1');
+    const bellSound2 = document.getElementById('bellSound2');
+    const videoContainer = document.getElementById('videoContainer');
+    
+    // Create two video elements (one always hidden)
+    const normalVideo = document.createElement('video');
+    normalVideo.className = 'counter-video';
+    normalVideo.muted = true;
+    normalVideo.src = 'assets/video/video1.mp4';
+    normalVideo.load();
+    
+    const specialVideo = document.createElement('video');
+    specialVideo.className = 'counter-video';
+    specialVideo.muted = true;
+    specialVideo.src = 'assets/video/video2.mp4';
+    specialVideo.load();
+    specialVideo.style.display = 'none';
+    
+    // Add both videos to container
+    videoContainer.appendChild(normalVideo);
+    videoContainer.appendChild(specialVideo);
+    
+    // Initialize counter from localStorage or set to 0
+    let count = localStorage.getItem('krisHairCounter') || 0;
+    count = parseInt(count);
+    counter.textContent = String(count).padStart(6, '0');
+    
+    // Initialize special target from localStorage or generate new one
+    let nextSpecialTarget = localStorage.getItem('krisHairSpecialTarget');
+    if (nextSpecialTarget === null || nextSpecialTarget <= count) {
+        nextSpecialTarget = generateRandomTarget(count);
+        localStorage.setItem('krisHairSpecialTarget', nextSpecialTarget);
+    } else {
+        nextSpecialTarget = parseInt(nextSpecialTarget);
+    }
+    
+    console.log("Current count:", count);
+    console.log("Next special target:", nextSpecialTarget);
+    
+    // Function to generate random target (current count + 1900-2000)
+    function generateRandomTarget(currentCount) {
+        const min = currentCount + 1900;
+        const max = currentCount + 2000;
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+    
+    counterBtn.addEventListener('click', function() {
+        // Calculate next count
+        const nextCount = count + 1;
+        
+        // Check if this is the special target
+        const isSpecialCount = nextCount === nextSpecialTarget;
+        
+        // Play appropriate sound
+        const soundToPlay = isSpecialCount ? bellSound2 : bellSound1;
+        soundToPlay.currentTime = 0;
+        soundToPlay.play().catch(e => console.log("Audio play failed:", e));
+        
+        // Handle video switching
+        if (isSpecialCount) {
+            // Show special video
+            normalVideo.style.display = 'none';
+            normalVideo.pause();
+            
+            specialVideo.style.display = 'block';
+            specialVideo.currentTime = 0;
+            specialVideo.play().catch(e => console.log("Special video play failed:", e));
+            
+            // Generate new random target for next special
+            nextSpecialTarget = generateRandomTarget(nextCount);
+            localStorage.setItem('krisHairSpecialTarget', nextSpecialTarget);
+            console.log("Next special target:", nextSpecialTarget);
+        } else {
+            // Show normal video
+            specialVideo.style.display = 'none';
+            specialVideo.pause();
+            
+            normalVideo.style.display = 'block';
+            normalVideo.currentTime = 0;
+            normalVideo.play().catch(e => console.log("Normal video play failed:", e));
+        }
+        
+        // Animate counter display
+        counterContainer.classList.remove('animate');
+        void counterContainer.offsetWidth; // Trigger reflow
+        counterContainer.classList.add('animate');
+        
+        // Update counter
+        count = nextCount;
+        counter.textContent = String(count).padStart(6, '0');
+        localStorage.setItem('krisHairCounter', count);
+        
+        // Button animation
+        counter.style.transform = 'scale(1.1)';
+        setTimeout(() => counter.style.transform = 'scale(1)', 300);
+    });
+
+    // Reset button functionality (admin only)
+    const resetCounterBtn = document.getElementById('resetCounterBtn');
+    if (window.location.search.includes('admin=1')) {
+        resetCounterBtn.style.display = 'block';
+    }
+    resetCounterBtn.addEventListener('click', function() {
+        if (confirm('Are you sure you want to reset the counter to 0?')) {
+            count = 0;
+            counter.textContent = '000000';
+            localStorage.setItem('krisHairCounter', 0);
+            
+            // Generate new random target after reset
+            nextSpecialTarget = generateRandomTarget(0);
+            localStorage.setItem('krisHairSpecialTarget', nextSpecialTarget);
+            
+            alert('Counter has been reset! Next special at: ' + nextSpecialTarget);
+        }
+    });
+    
+    // Carousel Functionality
+    const track = document.getElementById('clientsTrack');
+    const dotsContainer = document.getElementById('carouselDots');
+    const slides = document.querySelectorAll('.client-slide');
+    
+    if (track && dotsContainer) {
+        let currentIndex = 0;
+        let slidesPerView = 10; // Default for desktop
+        let totalSlides = slides.length;
+        
+        // Update slides per view based on screen size
+        function updateSlidesPerView() {
+            if (window.innerWidth <= 768) {
+                slidesPerView = 4; // Mobile
+            } else {
+                slidesPerView = 10; // Desktop
+            }
+            updateCarousel();
+        }
+        
+        // Create dots based on number of slides and slides per view
+        function createDots() {
+            dotsContainer.innerHTML = '';
+            const dotCount = Math.ceil(totalSlides / slidesPerView);
+            
+            for (let i = 0; i < dotCount; i++) {
+                const dot = document.createElement('div');
+                dot.classList.add('dot');
+                if (i === 0) dot.classList.add('active');
+                dot.addEventListener('click', () => goToSlide(i));
+                dotsContainer.appendChild(dot);
+            }
+        }
+        
+        function updateCarousel() {
+            const slideWidth = 100 / slidesPerView;
+            const offset = -currentIndex * slideWidth;
+            track.style.transform = `translateX(${offset}%)`;
+            
+            // Update dots
+            const dots = document.querySelectorAll('.dot');
+            const activeDotIndex = Math.floor(currentIndex / slidesPerView);
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === activeDotIndex);
+            });
+        }
+        
+        function goToSlide(index) {
+            currentIndex = index * slidesPerView;
+            if (currentIndex >= totalSlides) currentIndex = 0;
+            if (currentIndex < 0) currentIndex = totalSlides - slidesPerView;
+            updateCarousel();
+        }
+        
+        // Initialize
+        updateSlidesPerView();
+        createDots();
+        
+        // Auto-advance every 3 seconds
+        let autoSlide = setInterval(() => {
+            currentIndex += slidesPerView;
+            if (currentIndex >= totalSlides) currentIndex = 0;
+            updateCarousel();
+        }, 3000);
+        
+        // Pause auto-advance on hover
+        track.addEventListener('mouseenter', () => clearInterval(autoSlide));
+        track.addEventListener('mouseleave', () => {
+            autoSlide = setInterval(() => {
+                currentIndex += slidesPerView;
+                if (currentIndex >= totalSlides) currentIndex = 0;
+                updateCarousel();
+            }, 3000);
+        });
+        
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            updateSlidesPerView();
+            createDots();
+        });
+    }
+});
+</script>
+</body>
+</html>
