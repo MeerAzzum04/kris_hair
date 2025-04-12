@@ -794,7 +794,7 @@
                 content.style.opacity = '1';
             }, 500); // Match this with the CSS transition time
         }
-document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function() {
     // Elements
     const counterBtn = document.getElementById('counterBtn');
     const counter = document.getElementById('counter');
@@ -803,16 +803,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const bellSound2 = document.getElementById('bellSound2');
     const videoContainer = document.getElementById('videoContainer');
     
-    // Create two video elements (one always hidden)
+    // Create two video elements (one always hidden) with posters
     const normalVideo = document.createElement('video');
     normalVideo.className = 'counter-video';
     normalVideo.muted = true;
+    normalVideo.poster = 'assets/images/poster.webp'; // Add poster
     normalVideo.src = 'assets/video/video1.mp4';
     normalVideo.load();
     
     const specialVideo = document.createElement('video');
     specialVideo.className = 'counter-video';
     specialVideo.muted = true;
+    specialVideo.poster = 'assets/images/poster.webp'; // Add poster
     specialVideo.src = 'assets/video/video2.mp4';
     specialVideo.load();
     specialVideo.style.display = 'none';
@@ -821,29 +823,7 @@ document.addEventListener('DOMContentLoaded', function() {
     videoContainer.appendChild(normalVideo);
     videoContainer.appendChild(specialVideo);
     
-    // Initialize counter from localStorage or set to 0
-    let count = localStorage.getItem('krisHairCounter') || 0;
-    count = parseInt(count);
-    counter.textContent = String(count).padStart(6, '0');
-    
-    // Initialize special target from localStorage or generate new one
-    let nextSpecialTarget = localStorage.getItem('krisHairSpecialTarget');
-    if (nextSpecialTarget === null || nextSpecialTarget <= count) {
-        nextSpecialTarget = generateRandomTarget(count);
-        localStorage.setItem('krisHairSpecialTarget', nextSpecialTarget);
-    } else {
-        nextSpecialTarget = parseInt(nextSpecialTarget);
-    }
-    
-    console.log("Current count:", count);
-    console.log("Next special target:", nextSpecialTarget);
-    
-    // Function to generate random target (current count + 1900-2000)
-    function generateRandomTarget(currentCount) {
-        const min = currentCount + 1900;
-        const max = currentCount + 2000;
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
+    // Rest of your existing code...
     
     counterBtn.addEventListener('click', function() {
         // Calculate next count
@@ -879,8 +859,7 @@ document.addEventListener('DOMContentLoaded', function() {
             normalVideo.style.display = 'block';
             normalVideo.currentTime = 0;
             normalVideo.play().catch(e => console.log("Normal video play failed:", e));
-        }
-        
+        }    
         // Animate counter display
         counterContainer.classList.remove('animate');
         void counterContainer.offsetWidth; // Trigger reflow
