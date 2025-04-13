@@ -6,6 +6,11 @@
     <title>Kris With Hair | Jesus Kris</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="icon" type="image/webp" href="assets/images/icon.webp" />
+    <!-- Firebase App (Core SDK) -->
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<!-- Firebase Realtime Database -->
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
     
     <style>
 @font-face {
@@ -752,7 +757,8 @@
     <footer>
         <div class="container">
             <div class="footer-bottom">
-                <button id="resetCounterBtn" style="display: none;">Admin: Reset Counter</button>
+                <button id="resetCounterBtn" style="display: none;">Reset Counter</button>
+
                 <p>© 2025 Kris With Hair. All rights reserved.</p>
             </div>
         </div>
@@ -765,12 +771,30 @@
     <audio id="bellSound2" preload="auto">
         <source src="assets/audio/audio2.mp3" type="audio/mpeg">
     </audio>
-
     <script>
-            // Minimum display time (2 seconds)
-            const minDisplayTime = 1200;
+        // Firebase configuration
+        const firebaseConfig = {
+          apiKey: "AIzaSyC9LEByd3COKc01dKr_vkgtjloT1YNcuoY",
+          authDomain: "kriswithhair.firebaseapp.com",
+          databaseURL: "https://kriswithhair-default-rtdb.firebaseio.com",
+          projectId: "kriswithhair",
+          storageBucket: "kriswithhair.firebasestorage.app",
+          messagingSenderId: "684651496448",
+          appId: "1:684651496448:web:8e5cd4e028d74bca8c04e5",
+          measurementId: "G-0JSZJ434WS"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        
+        // Firebase refs
+        const counterRef = database.ref('counter');
+        const targetRef = database.ref('specialTarget');
+        
+        // Minimum display time (2 seconds)
+        const minDisplayTime = 1200;
         const startTime = Date.now();
-
+        
         window.addEventListener('load', function() {
             const remainingTime = minDisplayTime - (Date.now() - startTime);
             
@@ -780,10 +804,10 @@
                 hidePreloader();
             }
         });
-
+        
         // Fallback in case load event doesn't fire
         setTimeout(hidePreloader, 3000);
-
+        
         function hidePreloader() {
             const preloader = document.querySelector('.preloader');
             const content = document.querySelector('.content');
@@ -794,194 +818,206 @@
                 content.style.opacity = '1';
             }, 500); // Match this with the CSS transition time
         }
-document.addEventListener('DOMContentLoaded', function() {
-    // Elements
-    const counterBtn = document.getElementById('counterBtn');
-    const counter = document.getElementById('counter');
-    const counterContainer = document.querySelector('.counter-display-container');
-    const bellSound1 = document.getElementById('bellSound1');
-    const bellSound2 = document.getElementById('bellSound2');
-    const videoContainer = document.getElementById('videoContainer');
-    
-    // Create two video elements (one always hidden)
-    const normalVideo = document.createElement('video');
-    normalVideo.className = 'counter-video';
-    normalVideo.muted = true;
-    normalVideo.poster = 'assets/images/poster.webp'; // Add this line
-    normalVideo.src = 'assets/video/video1.mp4';
-    normalVideo.load();
-    
-    const specialVideo = document.createElement('video');
-    specialVideo.className = 'counter-video';
-    specialVideo.muted = true;
-    specialVideo.poster = 'assets/images/poster.webp'; // Add this line
-    specialVideo.src = 'assets/video/video2.mp4';
-    specialVideo.load();
-    specialVideo.style.display = 'none';
-    
-    // Add both videos to container
-    videoContainer.appendChild(normalVideo);
-    videoContainer.appendChild(specialVideo);
-    
-    // Initialize counter from localStorage or set to 0
-    let count = localStorage.getItem('krisHairCounter') || 0;
-    count = parseInt(count);
-    counter.textContent = String(count).padStart(6, '0');
-    
-    // Initialize special target from localStorage or generate new one
-    let nextSpecialTarget = localStorage.getItem('krisHairSpecialTarget');
-    if (nextSpecialTarget === null || nextSpecialTarget <= count) {
-        nextSpecialTarget = generateRandomTarget(count);
-        localStorage.setItem('krisHairSpecialTarget', nextSpecialTarget);
-    } else {
-        nextSpecialTarget = parseInt(nextSpecialTarget);
-    }
-    
-    console.log("Current count:", count);
-    console.log("Next special target:", nextSpecialTarget);
-    
-    // Function to generate random target (current count + 1900-2000)
-    function generateRandomTarget(currentCount) {
-        const min = currentCount + 1900;
-        const max = currentCount + 2000;
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
-    
-    counterBtn.addEventListener('click', function() {
-        // Calculate next count
-        const nextCount = count + 1;
         
-        // Check if this is the special target
-        const isSpecialCount = nextCount === nextSpecialTarget;
-        
-        // Play appropriate sound
-        const soundToPlay = isSpecialCount ? bellSound2 : bellSound1;
-        soundToPlay.currentTime = 0;
-        soundToPlay.play().catch(e => console.log("Audio play failed:", e));
-        
-        // Handle video switching
-        if (isSpecialCount) {
-            // Show special video
-            normalVideo.style.display = 'none';
-            normalVideo.pause();
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elements
+            const counterBtn = document.getElementById('counterBtn');
+            const counter = document.getElementById('counter');
+            const counterContainer = document.querySelector('.counter-display-container');
+            const bellSound1 = document.getElementById('bellSound1');
+            const bellSound2 = document.getElementById('bellSound2');
+            const videoContainer = document.getElementById('videoContainer');
             
-            specialVideo.style.display = 'block';
-            specialVideo.currentTime = 0;
-            specialVideo.play().catch(e => console.log("Special video play failed:", e));
+            // Create two video elements (one always hidden)
+            const normalVideo = document.createElement('video');
+            normalVideo.className = 'counter-video';
+            normalVideo.muted = true;
+            normalVideo.poster = 'assets/images/poster.webp'; // Add this line
+            normalVideo.src = 'assets/video/video1.mp4';
+            normalVideo.load();
             
-            // Generate new random target for next special
-            nextSpecialTarget = generateRandomTarget(nextCount);
-            localStorage.setItem('krisHairSpecialTarget', nextSpecialTarget);
-            console.log("Next special target:", nextSpecialTarget);
-        } else {
-            // Show normal video
+            const specialVideo = document.createElement('video');
+            specialVideo.className = 'counter-video';
+            specialVideo.muted = true;
+            specialVideo.poster = 'assets/images/poster.webp'; // Add this line
+            specialVideo.src = 'assets/video/video2.mp4';
+            specialVideo.load();
             specialVideo.style.display = 'none';
-            specialVideo.pause();
             
-            normalVideo.style.display = 'block';
-            normalVideo.currentTime = 0;
-            normalVideo.play().catch(e => console.log("Normal video play failed:", e));
-        }
+            // Add both videos to container
+            videoContainer.appendChild(normalVideo);
+            videoContainer.appendChild(specialVideo);
         
-        // Animate counter display
-        counterContainer.classList.remove('animate');
-        void counterContainer.offsetWidth; // Trigger reflow
-        counterContainer.classList.add('animate');
+            let count = 0;
+            let nextSpecialTarget = null;
+            let initialCounterFetched = false;
+            let initialTargetFetched = false;
         
-        // Update counter
-        count = nextCount;
-        counter.textContent = String(count).padStart(6, '0');
-        localStorage.setItem('krisHairCounter', count);
-        
-        // Button animation
-        counter.style.transform = 'scale(1.1)';
-        setTimeout(() => counter.style.transform = 'scale(1)', 300);
-    });
-
-    // Reset button functionality (admin only)
-    const resetCounterBtn = document.getElementById('resetCounterBtn');
-    if (window.location.search.includes('admin=1')) {
-        resetCounterBtn.style.display = 'block';
-    }
-    resetCounterBtn.addEventListener('click', function() {
-        if (confirm('Are you sure you want to reset the counter to 0?')) {
-            count = 0;
-            counter.textContent = '000000';
-            localStorage.setItem('krisHairCounter', 0);
-            
-            // Generate new random target after reset
-            nextSpecialTarget = generateRandomTarget(0);
-            localStorage.setItem('krisHairSpecialTarget', nextSpecialTarget);
-            
-            alert('Counter has been reset! Next special at: ' + nextSpecialTarget);
-        }
-    });
-    
-    // Carousel Functionality
-    const track = document.getElementById('clientsTrack');
-    const dotsContainer = document.getElementById('carouselDots');
-    const slides = document.querySelectorAll('.client-slide');
-    
-    if (track && dotsContainer) {
-        let currentIndex = 0;
-        let slidesPerView = 10; // Default for desktop
-        let totalSlides = slides.length;
-        
-        // Update slides per view based on screen size
-        function updateSlidesPerView() {
-            if (window.innerWidth <= 768) {
-                slidesPerView = 4; // Mobile
-            } else {
-                slidesPerView = 10; // Desktop
-            }
-            updateCarousel();
-        }
-        
-        // Create dots based on number of slides and slides per view
-        function createDots() {
-            dotsContainer.innerHTML = '';
-            const dotCount = Math.ceil(totalSlides / slidesPerView);
-            
-            for (let i = 0; i < dotCount; i++) {
-                const dot = document.createElement('div');
-                dot.classList.add('dot');
-                if (i === 0) dot.classList.add('active');
-                dot.addEventListener('click', () => goToSlide(i));
-                dotsContainer.appendChild(dot);
-            }
-        }
-        
-        function updateCarousel() {
-            const slideWidth = 100 / slidesPerView;
-            const offset = -currentIndex * slideWidth;
-            track.style.transform = `translateX(${offset}%)`;
-            
-            // Update dots
-            const dots = document.querySelectorAll('.dot');
-            const activeDotIndex = Math.floor(currentIndex / slidesPerView);
-            dots.forEach((dot, index) => {
-                dot.classList.toggle('active', index === activeDotIndex);
+            // Fetch and set the counter value from Firebase
+            counterRef.on('value', snapshot => {
+                const val = snapshot.val();
+                if (typeof val === 'number') {
+                    count = val;
+                    counter.textContent = String(count).padStart(6, '0');
+                    initialCounterFetched = true;
+                } else if (!initialCounterFetched) {
+                    // Set default counter to 0 in Firebase if not set already
+                    counterRef.set(0); 
+                    count = 0;
+                    initialCounterFetched = true;
+                }
             });
-        }
         
-        function goToSlide(index) {
-            currentIndex = index * slidesPerView;
-            if (currentIndex >= totalSlides) currentIndex = 0;
-            if (currentIndex < 0) currentIndex = totalSlides - slidesPerView;
-            updateCarousel();
-        }
+            // Fetch and set the special target value from Firebase
+            targetRef.on('value', snapshot => {
+                const val = snapshot.val();
+                if (typeof val === 'number') {
+                    nextSpecialTarget = val;
+                    initialTargetFetched = true;
+                } else if (!initialTargetFetched) {
+                    // If no target is set, generate and set a random target
+                    nextSpecialTarget = generateRandomTarget(count);
+                    targetRef.set(nextSpecialTarget);
+                    initialTargetFetched = true;
+                }
+            });
         
-        // Initialize
-        updateSlidesPerView();
-        createDots();
+            // Function to generate random target (current count + 1900-2000)
+            function generateRandomTarget(currentCount) {
+                const min = currentCount + 1900;
+                const max = currentCount + 2000;
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            }
         
-        // Handle window resize
-        window.addEventListener('resize', function() {
-            updateSlidesPerView();
-            createDots();
+            // Button click event listener
+            counterBtn.addEventListener('click', async function () {
+                const nextCount = count + 1;
+                const isSpecialCount = nextCount === nextSpecialTarget;
+        
+                const soundToPlay = isSpecialCount ? bellSound2 : bellSound1;
+                soundToPlay.currentTime = 0;
+                soundToPlay.play().catch(e => console.log("Audio play failed:", e));
+        
+                if (isSpecialCount) {
+                    normalVideo.style.display = 'none';
+                    normalVideo.pause();
+                    specialVideo.style.display = 'block';
+                    specialVideo.currentTime = 0;
+                    specialVideo.play().catch(e => console.log("Special video play failed:", e));
+        
+                    const newTarget = generateRandomTarget(nextCount);
+                    await targetRef.set(newTarget);
+                } else {
+                    specialVideo.style.display = 'none';
+                    specialVideo.pause();
+                    normalVideo.style.display = 'block';
+                    normalVideo.currentTime = 0;
+                    normalVideo.play().catch(e => console.log("Normal video play failed:", e));
+                }
+        
+                counterContainer.classList.remove('animate');
+                void counterContainer.offsetWidth;
+                counterContainer.classList.add('animate');
+        
+                // ✅ Update Firebase with incremented count
+                await counterRef.set(nextCount);
+        
+                // ✅ Locally update UI
+                count = nextCount;
+                counter.textContent = String(count).padStart(6, '0');
+        
+                counter.style.transform = 'scale(1.1)';
+                setTimeout(() => counter.style.transform = 'scale(1)', 300);
+            });
+        
+            // Admin check to hide reset button (optional)
+            const params = new URLSearchParams(window.location.search);
+            const isAdmin = params.get('admin') === 'true';
+            if (!isAdmin) {
+                resetCounterBtn.style.display = 'none';
+            }
+        
+            // Carousel Functionality (No changes here)
+            const track = document.getElementById('clientsTrack');
+            const dotsContainer = document.getElementById('carouselDots');
+            const slides = document.querySelectorAll('.client-slide');
+            
+            if (track && dotsContainer) {
+                let currentIndex = 0;
+                let slidesPerView = 10; // Default for desktop
+                let totalSlides = slides.length;
+                
+                function updateSlidesPerView() {
+                    if (window.innerWidth <= 768) {
+                        slidesPerView = 4; // Mobile
+                    } else {
+                        slidesPerView = 10; // Desktop
+                    }
+                    updateCarousel();
+                }
+                
+                function createDots() {
+                    dotsContainer.innerHTML = '';
+                    const dotCount = Math.ceil(totalSlides / slidesPerView);
+                    
+                    for (let i = 0; i < dotCount; i++) {
+                        const dot = document.createElement('div');
+                        dot.classList.add('dot');
+                        if (i === 0) dot.classList.add('active');
+                        dot.addEventListener('click', () => goToSlide(i));
+                        dotsContainer.appendChild(dot);
+                    }
+                }
+                
+                function updateCarousel() {
+                    const slideWidth = 100 / slidesPerView;
+                    const offset = -currentIndex * slideWidth;
+                    track.style.transform = `translateX(${offset}%)`;
+                    
+                    const dots = document.querySelectorAll('.dot');
+                    const activeDotIndex = Math.floor(currentIndex / slidesPerView);
+                    dots.forEach((dot, index) => {
+                        dot.classList.toggle('active', index === activeDotIndex);
+                    });
+                }
+                
+                function goToSlide(index) {
+                    currentIndex = index * slidesPerView;
+                    if (currentIndex >= totalSlides) currentIndex = 0;
+                    if (currentIndex < 0) currentIndex = totalSlides - slidesPerView;
+                    updateCarousel();
+                }
+                
+                updateSlidesPerView();
+                createDots();
+                
+                window.addEventListener('resize', function() {
+                    updateSlidesPerView();
+                    createDots();
+                });
+            }
         });
+
+        const resetCounterBtn = document.getElementById('resetCounterBtn');
+
+// Check for admin mode in URL
+const params = new URLSearchParams(window.location.search);
+const isAdmin = params.get('admin') === 'true';
+
+if (isAdmin) {
+  resetCounterBtn.style.display = 'block';
+
+  resetCounterBtn.addEventListener('click', async () => {
+    const confirmReset = confirm("Are you sure you want to reset the counter?");
+    if (confirmReset) {
+      await counterRef.set(0);
+      alert("Counter has been reset to 000000.");
     }
-});
-</script>
+  });
+}
+
+        </script>
+        
+      
 </body>
 </html>
