@@ -880,21 +880,18 @@
                 const maxGap = 2000;
                 const gap = Math.floor(Math.random() * (maxGap - minGap + 1)) + minGap;
                 const target = currentCount + gap;
-                console.log(`Next special event in ${gap} clicks (at count ${target})`);
                 return target;
             }
     
             counterBtn.addEventListener('click', async function () {
                 const nextCount = count + 1;
                 const isSpecialCount = nextCount === nextSpecialTarget;
-                console.log(`Count: ${nextCount}, SpecialTargets: ${specialTargets.join(', ')}, IsSpecial: ${isSpecialCount}`);
-    
                 const soundToPlay = isSpecialCount ? bellSound2 : bellSound1;
                 soundToPlay.currentTime = 0;
                 soundToPlay.play().catch(e => console.error("Audio error:", e));
     
                 if (isSpecialCount) {
-                    console.log("🎯 SPECIAL EVENT TRIGGERED - PLAYING SPECIAL VIDEO");
+              
                     normalVideo.style.display = 'none';
                     normalVideo.pause();
     
@@ -935,7 +932,7 @@ if (window.location.search.includes('admin=true')) {
     resetCounterBtn.style.display = 'block';
     
     resetCounterBtn.addEventListener('click', async function() {
-        // Prompt for custom reset value
+
         const resetValue = prompt('Enter the number to reset counter to:', '0');
         
         if (resetValue !== null) { // If user didn't cancel
@@ -943,12 +940,10 @@ if (window.location.search.includes('admin=true')) {
             
             if (!isNaN(newCount)) { // Validate input
                 await counterRef.set(newCount);
-                
-                // Generate new target (10-30 clicks from new count)
                 const newTarget = generateRandomTarget(newCount);
                 await targetRef.set(newTarget);
                 
-                alert(`Counter reset to ${newCount}! Next special at: ${newTarget}`);
+                alert(`Counter reset to ${newCount}`);
             } else {
                 alert('Please enter a valid number');
             }
