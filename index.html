@@ -900,7 +900,7 @@
                     specialVideo.play().catch(e => console.error("Special video error:", e));
     
                     nextSpecialTarget = generateRandomTarget(nextCount);
-                    specialTargets.push(nextSpecialTarget);
+                   
     
                     await Promise.all([
                         targetRef.set(nextSpecialTarget),
