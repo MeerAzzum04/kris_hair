@@ -774,192 +774,206 @@
     <script>
         // Firebase configuration
         const firebaseConfig = {
-          apiKey: "AIzaSyC9LEByd3COKc01dKr_vkgtjloT1YNcuoY",
-          authDomain: "kriswithhair.firebaseapp.com",
-          databaseURL: "https://kriswithhair-default-rtdb.firebaseio.com",
-          projectId: "kriswithhair",
-          storageBucket: "kriswithhair.firebasestorage.app",
-          messagingSenderId: "684651496448",
-          appId: "1:684651496448:web:8e5cd4e028d74bca8c04e5",
-          measurementId: "G-0JSZJ434WS"
+            apiKey: "AIzaSyC9LEByd3COKc01dKr_vkgtjloT1YNcuoY",
+            authDomain: "kriswithhair.firebaseapp.com",
+            databaseURL: "https://kriswithhair-default-rtdb.firebaseio.com",
+            projectId: "kriswithhair",
+            storageBucket: "kriswithhair.appspot.com",
+            messagingSenderId: "684651496448",
+            appId: "1:684651496448:web:8e5cd4e028d74bca8c04e5",
+            measurementId: "G-0JSZJ434WS"
         };
+    
         // Initialize Firebase
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
-        
-        // Firebase refs
         const counterRef = database.ref('counter');
         const targetRef = database.ref('specialTarget');
-        
-        // Minimum display time (2 seconds)
+        const specialTargetsRef = database.ref('specialTargets');
+    
         const minDisplayTime = 1200;
         const startTime = Date.now();
-        
-        window.addEventListener('load', function() {
+    
+        window.addEventListener('load', function () {
             const remainingTime = minDisplayTime - (Date.now() - startTime);
-            
             if (remainingTime > 0) {
                 setTimeout(hidePreloader, remainingTime);
             } else {
                 hidePreloader();
             }
         });
-        
-        // Fallback in case load event doesn't fire
+    
         setTimeout(hidePreloader, 3000);
-        
+    
         function hidePreloader() {
             const preloader = document.querySelector('.preloader');
             const content = document.querySelector('.content');
-            
             preloader.style.opacity = '0';
             setTimeout(() => {
                 preloader.style.display = 'none';
                 content.style.opacity = '1';
-            }, 500); // Match this with the CSS transition time
+            }, 500);
         }
-        
-        document.addEventListener('DOMContentLoaded', function() {
-            // Elements
+    
+        document.addEventListener('DOMContentLoaded', function () {
             const counterBtn = document.getElementById('counterBtn');
             const counter = document.getElementById('counter');
             const counterContainer = document.querySelector('.counter-display-container');
             const bellSound1 = document.getElementById('bellSound1');
             const bellSound2 = document.getElementById('bellSound2');
             const videoContainer = document.getElementById('videoContainer');
-            
-            // Create two video elements (one always hidden)
+            const resetCounterBtn = document.getElementById('resetCounterBtn');
+    
             const normalVideo = document.createElement('video');
             normalVideo.className = 'counter-video';
             normalVideo.muted = true;
-            normalVideo.poster = 'assets/images/poster.webp'; // Add this line
+            normalVideo.poster = 'assets/images/poster.webp';
             normalVideo.src = 'assets/video/video1.mp4';
             normalVideo.load();
-            
+    
             const specialVideo = document.createElement('video');
             specialVideo.className = 'counter-video';
             specialVideo.muted = true;
-            specialVideo.poster = 'assets/images/poster.webp'; // Add this line
+            specialVideo.poster = 'assets/images/poster.webp';
             specialVideo.src = 'assets/video/video2.mp4';
             specialVideo.load();
             specialVideo.style.display = 'none';
-            
-            // Add both videos to container
+    
             videoContainer.appendChild(normalVideo);
             videoContainer.appendChild(specialVideo);
-        
+    
             let count = 0;
             let nextSpecialTarget = null;
-            let initialCounterFetched = false;
-            let initialTargetFetched = false;
-        
-            // Fetch and set the counter value from Firebase
+            let specialTargets = [];
+    
             counterRef.on('value', snapshot => {
                 const val = snapshot.val();
                 if (typeof val === 'number') {
                     count = val;
                     counter.textContent = String(count).padStart(6, '0');
-                    initialCounterFetched = true;
-                } else if (!initialCounterFetched) {
-                    // Set default counter to 0 in Firebase if not set already
-                    counterRef.set(0); 
-                    count = 0;
-                    initialCounterFetched = true;
                 }
             });
-        
-            // Fetch and set the special target value from Firebase
+    
             targetRef.on('value', snapshot => {
                 const val = snapshot.val();
                 if (typeof val === 'number') {
                     nextSpecialTarget = val;
-                    initialTargetFetched = true;
-                } else if (!initialTargetFetched) {
-                    // If no target is set, generate and set a random target
-                    nextSpecialTarget = generateRandomTarget(count);
-                    targetRef.set(nextSpecialTarget);
-                    initialTargetFetched = true;
                 }
             });
-        
-            // Function to generate random target (current count + 1900-2000)
+    
+            specialTargetsRef.on('value', snapshot => {
+                const val = snapshot.val();
+                if (typeof val === 'string' && val.trim() !== '') {
+                    specialTargets = val.split(',').map(num => parseInt(num, 10)).filter(num => !isNaN(num));
+                } else {
+                    // Initialize with first target if none exists
+                    const initialTarget = generateRandomTarget(count);
+                    specialTargets = [initialTarget];
+                    specialTargetsRef.set(specialTargets.join(','));
+                    targetRef.set(initialTarget);
+                    nextSpecialTarget = initialTarget;
+                }
+            });
+    
             function generateRandomTarget(currentCount) {
-                const min = currentCount + 1900;
-                const max = currentCount + 2000;
-                return Math.floor(Math.random() * (max - min + 1)) + min;
+                const minGap = 1900;
+                const maxGap = 2000;
+                const gap = Math.floor(Math.random() * (maxGap - minGap + 1)) + minGap;
+                const target = currentCount + gap;
+                console.log(`Next special event in ${gap} clicks (at count ${target})`);
+                return target;
             }
-        
-            // Button click event listener
+    
             counterBtn.addEventListener('click', async function () {
                 const nextCount = count + 1;
                 const isSpecialCount = nextCount === nextSpecialTarget;
-        
+                console.log(`Count: ${nextCount}, SpecialTargets: ${specialTargets.join(', ')}, IsSpecial: ${isSpecialCount}`);
+    
                 const soundToPlay = isSpecialCount ? bellSound2 : bellSound1;
                 soundToPlay.currentTime = 0;
-                soundToPlay.play().catch(e => console.log("Audio play failed:", e));
-        
+                soundToPlay.play().catch(e => console.error("Audio error:", e));
+    
                 if (isSpecialCount) {
+                    console.log("🎯 SPECIAL EVENT TRIGGERED - PLAYING SPECIAL VIDEO");
                     normalVideo.style.display = 'none';
                     normalVideo.pause();
+    
                     specialVideo.style.display = 'block';
                     specialVideo.currentTime = 0;
-                    specialVideo.play().catch(e => console.log("Special video play failed:", e));
-        
-                    const newTarget = generateRandomTarget(nextCount);
-                    await targetRef.set(newTarget);
+                    specialVideo.play().catch(e => console.error("Special video error:", e));
+    
+                    nextSpecialTarget = generateRandomTarget(nextCount);
+                    specialTargets.push(nextSpecialTarget);
+    
+                    await Promise.all([
+                        targetRef.set(nextSpecialTarget),
+                        specialTargetsRef.set(specialTargets.join(','))
+                    ]);
                 } else {
                     specialVideo.style.display = 'none';
                     specialVideo.pause();
+    
                     normalVideo.style.display = 'block';
                     normalVideo.currentTime = 0;
-                    normalVideo.play().catch(e => console.log("Normal video play failed:", e));
+                    normalVideo.play().catch(e => console.error("Normal video error:", e));
                 }
-        
+    
                 counterContainer.classList.remove('animate');
                 void counterContainer.offsetWidth;
                 counterContainer.classList.add('animate');
-        
-                // ✅ Update Firebase with incremented count
-                await counterRef.set(nextCount);
-        
-                // ✅ Locally update UI
+    
                 count = nextCount;
                 counter.textContent = String(count).padStart(6, '0');
-        
+                await counterRef.set(count);
+    
                 counter.style.transform = 'scale(1.1)';
                 setTimeout(() => counter.style.transform = 'scale(1)', 300);
             });
+    
+      // Add this near your reset button initialization
+if (window.location.search.includes('admin=true')) {
+    resetCounterBtn.style.display = 'block';
+    
+    resetCounterBtn.addEventListener('click', async function() {
+        // Prompt for custom reset value
+        const resetValue = prompt('Enter the number to reset counter to:', '0');
         
-            // Admin check to hide reset button (optional)
-            const params = new URLSearchParams(window.location.search);
-            const isAdmin = params.get('admin') === 'true';
-            if (!isAdmin) {
-                resetCounterBtn.style.display = 'none';
+        if (resetValue !== null) { // If user didn't cancel
+            const newCount = parseInt(resetValue);
+            
+            if (!isNaN(newCount)) { // Validate input
+                await counterRef.set(newCount);
+                
+                // Generate new target (10-30 clicks from new count)
+                const newTarget = generateRandomTarget(newCount);
+                await targetRef.set(newTarget);
+                
+                alert(`Counter reset to ${newCount}! Next special at: ${newTarget}`);
+            } else {
+                alert('Please enter a valid number');
             }
-        
-            // Carousel Functionality (No changes here)
+        }
+    });
+}
+    
+            // Optional Carousel Section (unchanged)
             const track = document.getElementById('clientsTrack');
             const dotsContainer = document.getElementById('carouselDots');
             const slides = document.querySelectorAll('.client-slide');
-            
+    
             if (track && dotsContainer) {
                 let currentIndex = 0;
-                let slidesPerView = 10; // Default for desktop
+                let slidesPerView = 10;
                 let totalSlides = slides.length;
-                
+    
                 function updateSlidesPerView() {
-                    if (window.innerWidth <= 768) {
-                        slidesPerView = 4; // Mobile
-                    } else {
-                        slidesPerView = 10; // Desktop
-                    }
+                    slidesPerView = window.innerWidth <= 768 ? 4 : 10;
                     updateCarousel();
                 }
-                
+    
                 function createDots() {
                     dotsContainer.innerHTML = '';
                     const dotCount = Math.ceil(totalSlides / slidesPerView);
-                    
                     for (let i = 0; i < dotCount; i++) {
                         const dot = document.createElement('div');
                         dot.classList.add('dot');
@@ -968,56 +982,36 @@
                         dotsContainer.appendChild(dot);
                     }
                 }
-                
+    
                 function updateCarousel() {
                     const slideWidth = 100 / slidesPerView;
                     const offset = -currentIndex * slideWidth;
                     track.style.transform = `translateX(${offset}%)`;
-                    
+    
                     const dots = document.querySelectorAll('.dot');
                     const activeDotIndex = Math.floor(currentIndex / slidesPerView);
                     dots.forEach((dot, index) => {
                         dot.classList.toggle('active', index === activeDotIndex);
                     });
                 }
-                
+    
                 function goToSlide(index) {
                     currentIndex = index * slidesPerView;
                     if (currentIndex >= totalSlides) currentIndex = 0;
                     if (currentIndex < 0) currentIndex = totalSlides - slidesPerView;
                     updateCarousel();
                 }
-                
+    
                 updateSlidesPerView();
                 createDots();
-                
-                window.addEventListener('resize', function() {
+    
+                window.addEventListener('resize', function () {
                     updateSlidesPerView();
                     createDots();
                 });
             }
         });
-
-        const resetCounterBtn = document.getElementById('resetCounterBtn');
-
-// Check for admin mode in URL
-const params = new URLSearchParams(window.location.search);
-const isAdmin = params.get('admin') === 'true';
-
-if (isAdmin) {
-  resetCounterBtn.style.display = 'block';
-
-  resetCounterBtn.addEventListener('click', async () => {
-    const confirmReset = confirm("Are you sure you want to reset the counter?");
-    if (confirmReset) {
-      await counterRef.set(0);
-      alert("Counter has been reset to 000000.");
-    }
-  });
-}
-
-        </script>
-        
+    </script>
       
 </body>
 </html>
