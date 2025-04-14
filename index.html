@@ -811,7 +811,10 @@
             preloader.style.opacity = '0';
             setTimeout(() => {
                 preloader.style.display = 'none';
-                content.style.opacity = '1';
+                if(content){
+                    content.style.opacity = '1';
+                }
+                
             }, 500);
         }
     
@@ -866,9 +869,9 @@
     if (typeof val === 'string' && val.trim() !== '') {
         specialTargets = val.split(',').map(num => parseInt(num, 10)).filter(num => !isNaN(num));
     } else {
-        // Just create a new target, don't update specialTargets yet
+
         const initialTarget = generateRandomTarget(count);
-        targetRef.set(initialTarget); // Only set the new special target
+        targetRef.set(initialTarget);
         nextSpecialTarget = initialTarget;
     }
 });
@@ -879,22 +882,20 @@
                 const maxGap = 2000;
                 const gap = Math.floor(Math.random() * (maxGap - minGap + 1)) + minGap;
                 const target = currentCount + gap;
-                console.log(`Next special event in ${gap} clicks (at count ${target})`);
+
                 return target;
             }
     
             counterBtn.addEventListener('click', async function () {
                 const nextCount = count + 1;
                 const isSpecialCount = nextCount === nextSpecialTarget;
-                console.log(`Count: ${nextCount}, SpecialTargets: ${specialTargets.join(', ')}, IsSpecial: ${isSpecialCount}`);
+              
     
                 const soundToPlay = isSpecialCount ? bellSound2 : bellSound1;
                 soundToPlay.currentTime = 0;
                 soundToPlay.play().catch(e => console.error("Audio error:", e));
     
                 if (isSpecialCount) {
-    console.log("🎯 SPECIAL EVENT TRIGGERED - PLAYING SPECIAL VIDEO");
-
     // Show special video
     normalVideo.style.display = 'none';
     normalVideo.pause();
