@@ -20,7 +20,16 @@
     font-style: normal;
     font-display: swap; 
 }
+a{
+    color:#FFD700;
+    text-decoration: none;
+}
+a:hover{
+    color:#fff;
+    animation: opacity 1s ease 0.4s;
+    text-decoration: underline;
 
+}
 * {
     margin: 0;
     padding: 0;
@@ -46,7 +55,7 @@
     
         .hero {
             position: relative;
-            height: 60vh;
+            height: 70vh;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -101,7 +110,7 @@
         }
         
         .hero-address {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: rgba(255, 255, 255, 0.7);
             margin-bottom: 30px;
             animation: fadeInUp 1s ease 0.4s forwards;
@@ -620,6 +629,26 @@
             opacity: 0;
             transition: opacity 0.5s ease;
         }
+
+        .social-links {
+  display: flex;          /* puts items side by side */
+  justify-content: center; /* center them */
+  gap: 30px;              /* horizontal gap */
+  margin-top: 15px;
+}
+
+.social-links a {
+  color: #ffcc00;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.social-links a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+
     </style>
 </head>
 <body>
@@ -633,8 +662,39 @@
         <img src="assets/images/Bannerimage.webp" alt="Technology background" class="hero-bg">
         <div class="hero-content">
             <h1 class="hero-title">KRIS WITH HAIR</h1>
-            <p class="hero-subtitle">"Jesus Kris"</p>
-            <p class="hero-address">CA: 0xa60F8E703d8Ef26534658625E7e6900099f66210</p>
+            <p class="hero-address">
+            Welcome to the <strong>Kris With Hair</strong> official website <br>combining poker and crypto.     
+            </p>
+
+             <p class="hero-address">
+            Find the <strong>confetti video</strong>, take a screenshot, post on X, <br>
+      and tag <strong>Kris With Hair</strong> to win your free poker tournament entrance <br>
+      (valid up to $10 per clip).    
+            </p>
+
+            
+      <p class="hero-address">
+New to poker? Check out our tutorials on Discord. <br>
+      Our poker club is now open:  
+      <a href="https://www.pokernow.club/clubs/kriswithhair" target="_blank">
+Click Here
+      </a>    
+            </p>
+
+<div class="hero-address">
+<div class="social-links">
+  <a href="https://discord.gg/yourlink" target="_blank">
+    <i class="fab fa-discord"></i> KriswithHair
+  </a>
+  <a href="https://x.com/KriswithHair" target="_blank">
+    <i class="fab fa-twitter"></i> @KriswithHair
+  </a>
+</div>
+
+</div>
+
+</div>
+
         </div>
     </section>
 
