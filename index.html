@@ -7,38 +7,36 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="icon" type="image/webp" href="assets/images/icon.webp" />
     <!-- Firebase App (Core SDK) -->
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-<!-- Firebase Realtime Database -->
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
-
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <!-- Firebase Realtime Database -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
     
     <style>
-@font-face {
-    font-family: 'TrajanPro-Bold';
-    src: url('assets/font/TrajanPro-Bold.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap; 
-}
-a{
-    color:#FFD700;
-    text-decoration: none;
-}
-a:hover{
-    color:#fff;
-    animation: opacity 1s ease 0.4s;
-    text-decoration: underline;
-
-}
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'TrajanPro-Bold', 'Cinzel', serif;
-    -webkit-font-smoothing: antialiased; 
-    -moz-osx-font-smoothing: grayscale; 
-    text-rendering: optimizeLegibility;
-}
+        @font-face {
+            font-family: 'TrajanPro-Bold';
+            src: url('assets/font/TrajanPro-Bold.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap; 
+        }
+        a{
+            color:#FFD700;
+            text-decoration: none;
+        }
+        a:hover{
+            color:#fff;
+            animation: opacity 1s ease 0.4s;
+            text-decoration: underline;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'TrajanPro-Bold', 'Cinzel', serif;
+            -webkit-font-smoothing: antialiased; 
+            -moz-osx-font-smoothing: grayscale; 
+            text-rendering: optimizeLegibility;
+        }
         body {
             background-color: #000000;
             color: #ffffff;
@@ -47,16 +45,15 @@ a:hover{
             font-synthesis: none; 
         }
         
-    .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 5px 20px;
-    }
-    
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 5px 20px;
+        }
+        
         .hero {
             position: relative;
             height: 70vh;
-            min-height: 500px; /* Added minimum height */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -90,7 +87,6 @@ a:hover{
             z-index: 2;
             max-width: 800px;
             padding: 0 20px;
-            width: 100%; /* Added to ensure proper sizing */
         }
         
         .hero-title {
@@ -100,38 +96,20 @@ a:hover{
             margin-bottom: 10px;
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
             animation: fadeInUp 1s ease;
-            line-height: 1.1; /* Improved line height */
-        }
-        
-        .hero-subtitle {
-            font-size: 2.5rem;
-            color: rgba(255, 255, 255, 0.9);
-            margin-bottom: 10px;
-            animation: fadeInUp 1s ease 0.2s forwards;
-            opacity: 0;
-            font-style: italic;
-            line-height: 1.2; /* Improved line height */
         }
         
         .hero-address {
             font-size: 1.1rem;
             color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 20px; /* Reduced margin for better spacing */
+            margin-bottom: 30px;
             animation: fadeInUp 1s ease 0.4s forwards;
             opacity: 0;
-            word-break: normal; /* Changed from break-all */
+            word-break: normal;
             line-height: 1.5;
-            padding: 0 10px; /* Added padding for better text containment */
         }
-
-        /* NEW: Hero text container for better organization */
-        .hero-text-container {
-            display: flex;
-            flex-direction: column;
-            gap: 15px; /* Consistent spacing between text blocks */
-            width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
+        
+        .hero-address strong {
+            color: #FFD700;
         }
 
         .counter-section {
@@ -469,24 +447,34 @@ a:hover{
     }
 }
         
-       
+        /* Tablet View (768px - 1024px) */
         @media (max-width: 1024px) {
-          
             .hero-bg {
                content: url(assets/images/Bannerimage2.webp);
             }
             
             .hero-title {
-                font-size: 4rem; /* Adjusted for tablet */
+                font-size: 3.8rem;
+                line-height: 1.1;
             }
             
-            .hero-subtitle {
-                font-size: 2rem; /* Adjusted for tablet */
+            .hero-title .line-break {
+                display: block;
             }
             
             .hero-address {
-                font-size: 1rem; /* Slightly smaller for tablet */
-                padding: 0 15px; /* Adjusted padding */
+                font-size: 1rem;
+                word-break: normal;
+                line-height: 1.5;
+                margin-bottom: 15px;
+            }
+            
+            .hero-address br.tablet-break {
+                display: inline;
+            }
+            
+            .hero-address br.mobile-break {
+                display: none;
             }
             
             .client-slide {
@@ -494,28 +482,30 @@ a:hover{
             }
         }
         
-        @media (max-width: 768px) {
+        /* Mobile View (up to 767px) */
+        @media (max-width: 767px) {
             .hero {
-                height: auto; /* Allow height to adjust to content */
+                height: auto;
                 min-height: auto;
-                padding: 80px 0 60px; /* Added padding for mobile */
+                padding: 80px 0 60px;
             }
             
             .hero-title {
-                font-size: 3rem; /* Smaller for mobile */
-                line-height: 1.1;
-            }
-            
-            .hero-subtitle {
-                font-size: 1.8rem; /* Smaller for mobile */
-                line-height: 1.2;
+                font-size: 2.8rem;
             }
             
             .hero-address {
-                font-size: 0.95rem; /* Adjusted for mobile */
+                font-size: 0.95rem;
+                padding: 0 10px;
                 margin-bottom: 15px;
-                padding: 0 10px; /* Adjusted padding */
-                line-height: 1.4;
+            }
+            
+            .hero-address br.tablet-break {
+                display: none;
+            }
+            
+            .hero-address br.mobile-break {
+                display: inline;
             }
             
             .counter-display {
@@ -561,21 +551,21 @@ a:hover{
                 height: 80px;
                 padding: 15px;
             }
+            
+            .social-links {
+                flex-direction: column;
+                gap: 15px;
+            }
         }
         
+        /* Small Mobile View (up to 480px) */
         @media (max-width: 480px) {
             .hero-title {
-                font-size: 2.5rem; /* Even smaller for very small screens */
-            }
-            
-            .hero-subtitle {
-                font-size: 1.5rem; /* Even smaller for very small screens */
+                font-size: 2.2rem;
             }
             
             .hero-address {
-                font-size: 0.9rem; /* Even smaller for very small screens */
-                padding: 0 5px; /* Reduced padding */
-                line-height: 1.4;
+                font-size: 0.9rem;
             }
             
             .counter-btn {
@@ -622,21 +612,6 @@ a:hover{
             .clients-title {
                 font-size: 2rem;
                 margin-bottom: 30px;
-            }
-        }
-
-        /* NEW: Additional responsive text adjustments */
-        @media (max-width: 360px) {
-            .hero-title {
-                font-size: 2.2rem;
-            }
-            
-            .hero-subtitle {
-                font-size: 1.3rem;
-            }
-            
-            .hero-address {
-                font-size: 0.85rem;
             }
         }
 
@@ -697,7 +672,7 @@ a:hover{
   justify-content: center; /* center them */
   gap: 30px;              /* horizontal gap */
   margin-top: 15px;
-  flex-wrap: wrap; /* Allow wrapping on small screens */
+  flex-wrap: wrap;
 }
 
 .social-links a {
@@ -705,7 +680,7 @@ a:hover{
   font-weight: 600;
   text-decoration: none;
   transition: color 0.3s ease;
-  white-space: nowrap; /* Prevent text from breaking */
+  white-space: nowrap;
 }
 
 .social-links a:hover {
@@ -725,36 +700,35 @@ a:hover{
     <section class="hero">
         <img src="assets/images/Bannerimage.webp" alt="Technology background" class="hero-bg">
         <div class="hero-content">
-            <div class="hero-text-container">
-                <h1 class="hero-title">KRIS WITH HAIR</h1>
-                <p class="hero-address">
-                Welcome to the <strong>Kris With Hair</strong> official website <br class="desktop-only">combining poker and crypto.     
-                </p>
+            <h1 class="hero-title">KRIS WITH HAIR</h1>
+            
+            <p class="hero-address">
+                WELCOME TO THE KRIS WITH HAIR OFFICIAL WEBSITE<br>
+                COMBINING POKER AND CRYPTO.     
+            </p>
 
-                <p class="hero-address">
-                Find the <strong>confetti video</strong>, take a screenshot, post on X, <br class="desktop-only">
-                and tag <strong>Kris With Hair</strong> to win your free poker tournament entrance <br class="desktop-only">
-                (valid up to $10 per clip).    
-                </p>
+            <p class="hero-address">
+                FIND THE CONFETTI VIDEO, TAKE A SCREENSHOT, POST ON X,<br>
+                AND TAG KRIS WITH HAIR TO WIN YOUR FREE POKER TOURNAMENT ENTRANCE<br>
+                (VALID UP TO $10 PER CLIP).    
+            </p>
 
-                
-                <p class="hero-address">
-                New to poker? Check out our tutorials on Discord. <br class="desktop-only">
-                Our poker club is now open:  
+            <p class="hero-address">
+                NEW TO POKER? CHECK OUT OUR TUTORIALS ON DISCORD<br>
+                OUR POKER CLUB IS NOW OPEN:  
                 <a href="https://www.pokernow.club/clubs/kriswithhair" target="_blank">
-                Click Here
+                    CLICK HERE
                 </a>    
-                </p>
+            </p>
 
-                <div class="hero-address">
-                    <div class="social-links">
-                        <a href="https://discord.gg/KEwt6xxMpB" target="_blank">
-                            <i class="fab fa-discord"></i> KriswithHair
-                        </a>
-                        <a href="https://x.com/KrisWithHair" target="_blank">
-                            <i class="fab fa-twitter"></i> @KriswithHair
-                        </a>
-                    </div>
+            <div class="hero-address">
+                <div class="social-links">
+                    <a href="https://discord.gg/KEwt6xxMpB" target="_blank">
+                        <i class="fab fa-discord"></i> KRISWITHHAIR
+                    </a>
+                    <a href="https://x.com/KrisWithHair" target="_blank">
+                        <i class="fab fa-twitter"></i> @KRISWITHHAIR
+                    </a>
                 </div>
             </div>
         </div>
@@ -815,7 +789,7 @@ a:hover{
                         <div class="client-logo"><a href="https://x.com/AurumTrustCro?t=08LpfiZhNZGDHE-JgINM3g&s=09"  target="_blank" ><img src="assets/images/client6.webp" alt="Client 3"> </a> </div>
                     </div>
                     <div class="client-slide">
-                        <div class="client-logo"><a href="https://x.com/CrazzzyMonsters?t=nM1ofUBmdDxyW9SP6bey-A&s=09  target="_blank" ><img src="assets/images/client5.webp" alt="Client 4"> </a> </div>
+                        <div class="client-logo"><a href="https://x.com/CrazzzyMonsters?t=nM1ofUBmdDxyW9SP6bey-A&s=09"  target="_blank" ><img src="assets/images/client5.webp" alt="Client 4"> </a> </div>
                     </div>
                     <div class="client-slide">
                         <div class="client-logo"><a href="https://linktr.ee/project_ishin"  target="_blank" ><img src="assets/images/client4.webp" alt="Client 5"> </a> </div>
@@ -869,9 +843,6 @@ a:hover{
                 
                 <div class="carousel-dots" id="carouselDots"></div>
             </div>
-                
-                <div class="carousel-dots" id="carouselDots"></div>
-            </div>
         </div>
     </section>
 
@@ -880,7 +851,6 @@ a:hover{
         <div class="container">
             <div class="footer-bottom">
                 <button id="resetCounterBtn" style="display: none;">Reset Counter</button>
-
                 <p>© 2025 Kris With Hair. All rights reserved.</p>
             </div>
         </div>
@@ -987,24 +957,21 @@ a:hover{
             });
     
             specialTargetsRef.on('value', snapshot => {
-    const val = snapshot.val();
-    if (typeof val === 'string' && val.trim() !== '') {
-        specialTargets = val.split(',').map(num => parseInt(num, 10)).filter(num => !isNaN(num));
-    } else {
-
-        const initialTarget = generateRandomTarget(count);
-        targetRef.set(initialTarget);
-        nextSpecialTarget = initialTarget;
-    }
-});
-
+                const val = snapshot.val();
+                if (typeof val === 'string' && val.trim() !== '') {
+                    specialTargets = val.split(',').map(num => parseInt(num, 10)).filter(num => !isNaN(num));
+                } else {
+                    const initialTarget = generateRandomTarget(count);
+                    targetRef.set(initialTarget);
+                    nextSpecialTarget = initialTarget;
+                }
+            });
     
             function generateRandomTarget(currentCount) {
                 const minGap = 1900;
                 const maxGap = 2000;
                 const gap = Math.floor(Math.random() * (maxGap - minGap + 1)) + minGap;
                 const target = currentCount + gap;
-
                 return target;
             }
     
@@ -1012,32 +979,30 @@ a:hover{
                 const nextCount = count + 1;
                 const isSpecialCount = nextCount === nextSpecialTarget;
               
-    
                 const soundToPlay = isSpecialCount ? bellSound2 : bellSound1;
                 soundToPlay.currentTime = 0;
                 soundToPlay.play().catch(e => console.error("Audio error:", e));
     
                 if (isSpecialCount) {
-    // Show special video
-    normalVideo.style.display = 'none';
-    normalVideo.pause();
-    specialVideo.style.display = 'block';
-    specialVideo.currentTime = 0;
-    specialVideo.play().catch(e => console.error("Special video error:", e));
+                    // Show special video
+                    normalVideo.style.display = 'none';
+                    normalVideo.pause();
+                    specialVideo.style.display = 'block';
+                    specialVideo.currentTime = 0;
+                    specialVideo.play().catch(e => console.error("Special video error:", e));
 
-    // Append the current triggered count to the array
-    specialTargets.push(nextCount);
+                    // Append the current triggered count to the array
+                    specialTargets.push(nextCount);
 
-    // Generate new target
-    nextSpecialTarget = generateRandomTarget(nextCount);
+                    // Generate new target
+                    nextSpecialTarget = generateRandomTarget(nextCount);
 
-    // Save both updated target and list
-    await Promise.all([
-        targetRef.set(nextSpecialTarget),
-        specialTargetsRef.set(specialTargets.join(','))
-    ]);
-}
-else {
+                    // Save both updated target and list
+                    await Promise.all([
+                        targetRef.set(nextSpecialTarget),
+                        specialTargetsRef.set(specialTargets.join(','))
+                    ]);
+                } else {
                     specialVideo.style.display = 'none';
                     specialVideo.pause();
     
@@ -1058,31 +1023,31 @@ else {
                 setTimeout(() => counter.style.transform = 'scale(1)', 300);
             });
     
-      // Add this near your reset button initialization
-if (window.location.search.includes('admin=true')) {
-    resetCounterBtn.style.display = 'block';
-    
-    resetCounterBtn.addEventListener('click', async function() {
-        // Prompt for custom reset value
-        const resetValue = prompt('Enter the number to reset counter to:', '0');
-        
-        if (resetValue !== null) { // If user didn't cancel
-            const newCount = parseInt(resetValue);
-            
-            if (!isNaN(newCount)) { // Validate input
-                await counterRef.set(newCount);
+            // Add this near your reset button initialization
+            if (window.location.search.includes('admin=true')) {
+                resetCounterBtn.style.display = 'block';
                 
-                // Generate new target (10-30 clicks from new count)
-                const newTarget = generateRandomTarget(newCount);
-                await targetRef.set(newTarget);
-                
-                alert(`Counter reset to ${newCount}`);
-            } else {
-                alert('Please enter a valid number');
+                resetCounterBtn.addEventListener('click', async function() {
+                    // Prompt for custom reset value
+                    const resetValue = prompt('Enter the number to reset counter to:', '0');
+                    
+                    if (resetValue !== null) { // If user didn't cancel
+                        const newCount = parseInt(resetValue);
+                        
+                        if (!isNaN(newCount)) { // Validate input
+                            await counterRef.set(newCount);
+                            
+                            // Generate new target (10-30 clicks from new count)
+                            const newTarget = generateRandomTarget(newCount);
+                            await targetRef.set(newTarget);
+                            
+                            alert(`Counter reset to ${newCount}`);
+                        } else {
+                            alert('Please enter a valid number');
+                        }
+                    }
+                });
             }
-        }
-    });
-}
     
             // Optional Carousel Section (unchanged)
             const track = document.getElementById('clientsTrack');
@@ -1140,7 +1105,5 @@ if (window.location.search.includes('admin=true')) {
             }
         });
     </script>
-      
 </body>
 </html>
-
