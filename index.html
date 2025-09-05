@@ -56,6 +56,7 @@ a:hover{
         .hero {
             position: relative;
             height: 70vh;
+            min-height: 500px; /* Added minimum height */
             display: flex;
             align-items: center;
             justify-content: center;
@@ -89,6 +90,7 @@ a:hover{
             z-index: 2;
             max-width: 800px;
             padding: 0 20px;
+            width: 100%; /* Added to ensure proper sizing */
         }
         
         .hero-title {
@@ -98,6 +100,7 @@ a:hover{
             margin-bottom: 10px;
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
             animation: fadeInUp 1s ease;
+            line-height: 1.1; /* Improved line height */
         }
         
         .hero-subtitle {
@@ -107,15 +110,28 @@ a:hover{
             animation: fadeInUp 1s ease 0.2s forwards;
             opacity: 0;
             font-style: italic;
+            line-height: 1.2; /* Improved line height */
         }
         
         .hero-address {
             font-size: 1.1rem;
             color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 30px;
+            margin-bottom: 20px; /* Reduced margin for better spacing */
             animation: fadeInUp 1s ease 0.4s forwards;
             opacity: 0;
-            word-break: break-all;
+            word-break: normal; /* Changed from break-all */
+            line-height: 1.5;
+            padding: 0 10px; /* Added padding for better text containment */
+        }
+
+        /* NEW: Hero text container for better organization */
+        .hero-text-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px; /* Consistent spacing between text blocks */
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
         }
 
         .counter-section {
@@ -460,22 +476,46 @@ a:hover{
                content: url(assets/images/Bannerimage2.webp);
             }
             
+            .hero-title {
+                font-size: 4rem; /* Adjusted for tablet */
+            }
+            
+            .hero-subtitle {
+                font-size: 2rem; /* Adjusted for tablet */
+            }
+            
+            .hero-address {
+                font-size: 1rem; /* Slightly smaller for tablet */
+                padding: 0 15px; /* Adjusted padding */
+            }
+            
             .client-slide {
                 flex: 0 0 20%; /* Show 5 per row on tablet */
             }
         }
         
         @media (max-width: 768px) {
+            .hero {
+                height: auto; /* Allow height to adjust to content */
+                min-height: auto;
+                padding: 80px 0 60px; /* Added padding for mobile */
+            }
+            
             .hero-title {
-                font-size: 2.5rem;
+                font-size: 3rem; /* Smaller for mobile */
+                line-height: 1.1;
             }
             
             .hero-subtitle {
-                font-size: 1.5rem;
+                font-size: 1.8rem; /* Smaller for mobile */
+                line-height: 1.2;
             }
             
             .hero-address {
-                font-size: 1rem;
+                font-size: 0.95rem; /* Adjusted for mobile */
+                margin-bottom: 15px;
+                padding: 0 10px; /* Adjusted padding */
+                line-height: 1.4;
             }
             
             .counter-display {
@@ -524,6 +564,20 @@ a:hover{
         }
         
         @media (max-width: 480px) {
+            .hero-title {
+                font-size: 2.5rem; /* Even smaller for very small screens */
+            }
+            
+            .hero-subtitle {
+                font-size: 1.5rem; /* Even smaller for very small screens */
+            }
+            
+            .hero-address {
+                font-size: 0.9rem; /* Even smaller for very small screens */
+                padding: 0 5px; /* Reduced padding */
+                line-height: 1.4;
+            }
+            
             .counter-btn {
             font-size: 1.4rem;
             border-radius: 60px;
@@ -542,13 +596,6 @@ a:hover{
             .info-side {
                 margin-top: 50px;
                 text-align: center;
-            }
-            .hero-title {
-                font-size: 2rem;
-            }
-            
-            .hero-subtitle {
-                font-size: 1.2rem;
             }
             
             .footer-content {
@@ -575,6 +622,21 @@ a:hover{
             .clients-title {
                 font-size: 2rem;
                 margin-bottom: 30px;
+            }
+        }
+
+        /* NEW: Additional responsive text adjustments */
+        @media (max-width: 360px) {
+            .hero-title {
+                font-size: 2.2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.3rem;
+            }
+            
+            .hero-address {
+                font-size: 0.85rem;
             }
         }
 
@@ -635,6 +697,7 @@ a:hover{
   justify-content: center; /* center them */
   gap: 30px;              /* horizontal gap */
   margin-top: 15px;
+  flex-wrap: wrap; /* Allow wrapping on small screens */
 }
 
 .social-links a {
@@ -642,6 +705,7 @@ a:hover{
   font-weight: 600;
   text-decoration: none;
   transition: color 0.3s ease;
+  white-space: nowrap; /* Prevent text from breaking */
 }
 
 .social-links a:hover {
@@ -661,40 +725,38 @@ a:hover{
     <section class="hero">
         <img src="assets/images/Bannerimage.webp" alt="Technology background" class="hero-bg">
         <div class="hero-content">
-            <h1 class="hero-title">KRIS WITH HAIR</h1>
-            <p class="hero-address">
-            Welcome to the <strong>Kris With Hair</strong> official website <br>combining poker and crypto.     
-            </p>
+            <div class="hero-text-container">
+                <h1 class="hero-title">KRIS WITH HAIR</h1>
+                <p class="hero-address">
+                Welcome to the <strong>Kris With Hair</strong> official website <br class="desktop-only">combining poker and crypto.     
+                </p>
 
-             <p class="hero-address">
-            Find the <strong>confetti video</strong>, take a screenshot, post on X, <br>
-      and tag <strong>Kris With Hair</strong> to win your free poker tournament entrance <br>
-      (valid up to $10 per clip).    
-            </p>
+                <p class="hero-address">
+                Find the <strong>confetti video</strong>, take a screenshot, post on X, <br class="desktop-only">
+                and tag <strong>Kris With Hair</strong> to win your free poker tournament entrance <br class="desktop-only">
+                (valid up to $10 per clip).    
+                </p>
 
-            
-      <p class="hero-address">
-New to poker? Check out our tutorials on Discord. <br>
-      Our poker club is now open:  
-      <a href="https://www.pokernow.club/clubs/kriswithhair" target="_blank">
-Click Here
-      </a>    
-            </p>
+                
+                <p class="hero-address">
+                New to poker? Check out our tutorials on Discord. <br class="desktop-only">
+                Our poker club is now open:  
+                <a href="https://www.pokernow.club/clubs/kriswithhair" target="_blank">
+                Click Here
+                </a>    
+                </p>
 
-<div class="hero-address">
-<div class="social-links">
-  <a href="https://discord.gg/KEwt6xxMpB" target="_blank">
-    <i class="fab fa-discord"></i> KriswithHair
-  </a>
-  <a href="https://x.com/KrisWithHair" target="_blank">
-    <i class="fab fa-twitter"></i> @KriswithHair
-  </a>
-</div>
-
-</div>
-
-</div>
-
+                <div class="hero-address">
+                    <div class="social-links">
+                        <a href="https://discord.gg/KEwt6xxMpB" target="_blank">
+                            <i class="fab fa-discord"></i> KriswithHair
+                        </a>
+                        <a href="https://x.com/KrisWithHair" target="_blank">
+                            <i class="fab fa-twitter"></i> @KriswithHair
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
